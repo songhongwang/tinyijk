@@ -35,11 +35,6 @@ public class Settings {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mAppContext);
     }
 
-    public boolean getEnableBackgroundPlay() {
-//        String key = mAppContext.getString(R.string.pref_key_enable_background_play);
-        String key = "getEnableBackgroundPlay";
-        return mSharedPreferences.getBoolean(key, false);
-    }
 
     public int getPlayer() {
 //        String key = mAppContext.getString(R.string.pref_key_player);
@@ -54,26 +49,30 @@ public class Settings {
 
     public boolean getUsingMediaCodec() {
 //        String key = mAppContext.getString(R.string.pref_key_using_media_codec);
-        String key = "getUsingMediaCodec";
-        return mSharedPreferences.getBoolean(key, false);
+//        String key = "getUsingMediaCodec";
+//        return mSharedPreferences.getBoolean(key, false);
+        return true;
     }
 
     public boolean getUsingMediaCodecAutoRotate() {
 //        String key = mAppContext.getString(R.string.pref_key_using_media_codec_auto_rotate);
-        String key = "getUsingMediaCodecAutoRotate";
-        return mSharedPreferences.getBoolean(key, false);
+//        String key = "getUsingMediaCodecAutoRotate";
+//        return mSharedPreferences.getBoolean(key, false);
+        return true;
     }
 
     public boolean getMediaCodecHandleResolutionChange() {
 //        String key = mAppContext.getString(R.string.pref_key_media_codec_handle_resolution_change);
-        String key = "getMediaCodecHandleResolutionChange";
-        return mSharedPreferences.getBoolean(key, false);
+//        String key = "getMediaCodecHandleResolutionChange";
+//        return mSharedPreferences.getBoolean(key, false);
+        return true;
     }
 
     public boolean getUsingOpenSLES() {
 //        String key = mAppContext.getString(R.string.pref_key_using_opensl_es);
-        String key = "getUsingOpenSLES";
-        return mSharedPreferences.getBoolean(key, false);
+//        String key = "getUsingOpenSLES";
+//        return mSharedPreferences.getBoolean(key, false);
+        return true;
     }
 
     public String getPixelFormat() {
@@ -84,43 +83,38 @@ public class Settings {
 
     public boolean getEnableNoView() {
 //        String key = mAppContext.getString(R.string.pref_key_enable_no_view);
-        String key = "getEnableNoView";
-        return mSharedPreferences.getBoolean(key, false);
+//        String key = "getEnableNoView";
+//        return mSharedPreferences.getBoolean(key, false);
+        return false;
     }
 
     public boolean getEnableSurfaceView() {
 //        String key = mAppContext.getString(R.string.pref_key_enable_surface_view);
-        String key = "getEnableSurfaceView";
-        return mSharedPreferences.getBoolean(key, false);
+//        String key = "getEnableSurfaceView";
+//        return mSharedPreferences.getBoolean(key, false);
+        return false;
     }
 
     public boolean getEnableTextureView() {
 //        String key = mAppContext.getString(R.string.pref_key_enable_texture_view);
-        String key = "getEnableTextureView";
-        return mSharedPreferences.getBoolean(key, false);
+//        String key = "getEnableTextureView";
+//        return mSharedPreferences.getBoolean(key, false);
+        return true;
     }
 
     public boolean getEnableDetachedSurfaceTextureView() {
 //        String key = mAppContext.getString(R.string.pref_key_enable_detached_surface_texture);
-        String key = "getEnableDetachedSurfaceTextureView";
-        return mSharedPreferences.getBoolean(key, false);
+//        String key = "getEnableDetachedSurfaceTextureView";
+//        return mSharedPreferences.getBoolean(key, false);
+        return true;
     }
 
     public boolean getUsingMediaDataSource() {
 //        String key = mAppContext.getString(R.string.pref_key_using_mediadatasource);
-        String key = "getUsingMediaDataSource";
-        return mSharedPreferences.getBoolean(key, false);
+//        String key = "getUsingMediaDataSource";
+//        return mSharedPreferences.getBoolean(key, false);
+        return true;
     }
 
-    public String getLastDirectory() {
-//        String key = mAppContext.getString(R.string.pref_key_last_directory);
-        String key = "getLastDirectory";
-        return mSharedPreferences.getString(key, "/");
-    }
 
-    public void setLastDirectory(String path) {
-//        String key = mAppContext.getString(R.string.pref_key_last_directory);
-        String key = "setLastDirectory";
-        mSharedPreferences.edit().putString(key, path).apply();
-    }
 }
