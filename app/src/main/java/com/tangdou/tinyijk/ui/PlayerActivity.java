@@ -12,6 +12,7 @@ import com.tangdou.tinyijk.R;
 import com.tangdou.tinyijk.media.widget.media.AndroidMediaController;
 import com.tangdou.tinyijk.media.widget.media.IRenderView;
 import com.tangdou.tinyijk.media.widget.media.IjkVideoView;
+import com.tangdou.tinyijk.media.widget.media.controller.SeekController;
 
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
@@ -19,7 +20,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     private IjkVideoView mVideoView;
     private TableLayout mHudView;
-    private AndroidMediaController mMediaController;
+    private SeekController mSeekController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,29 +28,14 @@ public class PlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_player);
 
         initPlayer();
-        initLogic();
     }
 
-    private void initLogic(){
-        findViewById(R.id.btn_play).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mVideoView.start();
-            }
-        });
-
-        findViewById(R.id.btn_pause).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mVideoView.pause();
-            }
-        });
-    }
 
     private void initPlayer() {
         String url = "http://aksyun.tangdou.com/6BC9E41AF5AAD7819C33DC5901307461-20.mp4";
 //        url = "http://zv.3gv.ifeng.com/live/zhongwen800k.m3u8";
-        url = "http://accto.tangdou.com/6B6FB1FBE9E9F9A69C33DC5901307461-20.mp4";
+//        url = "http://accto.tangdou.com/6B6FB1FBE9E9F9A69C33DC5901307461-20.mp4";
+        url = "http://v6.365yg.com/video/m/220f89ea3ca5c8d472a8fdd0a20854b1e79114632f00002f41f0906ee0/?Expires=1494846019&AWSAccessKeyId=qh0h9TdcEMoS2oPj7aKX&Signature=3dFTg35neuuivNpwadic9r9hbP4%3D";
 
         // 播放容器
         mVideoView = (IjkVideoView) findViewById(R.id.video_view);
@@ -60,9 +46,11 @@ public class PlayerActivity extends AppCompatActivity {
         mVideoView.setHudView(mHudView);
 
         // 播放控制器
-        mMediaController = new AndroidMediaController(this, false);
-        mVideoView.setMediaController(mMediaController);
+//        AndroidMediaController mediaController = new AndroidMediaController(this, false);
+//        mVideoView.setMediaController(mediaController);
 
+        mSeekController = (SeekController) findViewById(R.id.seek_controller);
+        mSeekController.setMediaPlayer(mVideoView);
 
 
         HttpProxyCacheServer proxy = App.getProxy(this);
@@ -73,6 +61,7 @@ public class PlayerActivity extends AppCompatActivity {
         }
         mVideoView.setVideoPath(proxyUrl);
         mVideoView.start();
+
 
     }
 

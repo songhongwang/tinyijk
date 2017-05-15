@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_menu"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="62dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:background="#80000000">
+            <TextView
+                android:id="@+id/tv_pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/video_pause"/>
+
+            <TextView
+                android:id="@+id/time_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="25dp"
+                android:layout_toRightOf="@id/tv_pause"
+                android:textColor="#FFF"
+                android:text="00:00"
+                android:textSize="10dp"/>
+
+            <TextView
+                android:id="@+id/time_divider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/time_total"
+                android:textColor="#FFF"
+                android:text=" / "
+                android:textSize="10dp"/>
+
+            <TextView
+                android:id="@+id/time_current"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/time_divider"
+                android:textColor="#FFF"
+                android:text="00:00"
+                android:textSize="10dp"/>
+
+        </RelativeLayout>
+
+        <SeekBar
+            android:id="@+id/sb_progress"
+            android:progressDrawable="@drawable/seekbar_style"
+            android:thumb="@drawable/thumb"
+            android:focusable="true"
+            android:maxHeight="2.0dip"
+            android:minHeight="2.0dip"
+            android:padding="0dp"
+            android:paddingEnd="0dp"
+            android:paddingStart="0dp"
+            android:thumbOffset="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+</RelativeLayout>

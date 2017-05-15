@@ -20,18 +20,9 @@
         android:layout_height="match_parent"
         android:background="@android:color/transparent"/>
 
-    <Button
-        android:id="@+id/btn_play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="play"/>
+    <com.tangdou.tinyijk.media.widget.media.controller.SeekController
+        android:id="@+id/seek_controller"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
-    <Button
-        android:id="@+id/btn_pause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="pause"/>
 </RelativeLayout>
