@@ -24,7 +24,7 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
  * Created by vigorous on 17/5/15.
  */
 
-public class SeekController extends FrameLayout implements View.OnTouchListener{
+public class SeekBarMediaController extends FrameLayout implements View.OnTouchListener{
 
     private static final int sDefaultTimeout = 3000;
     private IjkVideoView mVideoView;
@@ -38,21 +38,27 @@ public class SeekController extends FrameLayout implements View.OnTouchListener{
     private StringBuilder mFormatBuilder;
     private Formatter mFormatter;
     private ImageView mPauseButton;
+    private ImageView mCloseButton;
+    private OnCloseListener mOnCloseListener;
 
-    public SeekController(Context context) {
+    public SeekBarMediaController(Context context) {
         super(context);
         initView();
     }
 
-    public SeekController(Context context, AttributeSet attrs) {
+    public SeekBarMediaController(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
         initView();
     }
 
-    public SeekController(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SeekBarMediaController(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView();
+    }
+
+    public void setOnCloseListener(OnCloseListener onCloseListener) {
+        mOnCloseListener = onCloseListener;
     }
 
     public void setMediaPlayer(IjkVideoView videoView) {
@@ -80,6 +86,7 @@ public class SeekController extends FrameLayout implements View.OnTouchListener{
         mMenu = findViewById(R.id.rl_menu);
         findViewById(R.id.rl_root).setOnTouchListener(this);
         mPauseButton = (ImageView) findViewById(R.id.iv_pause);
+        mCloseButton = (ImageView) findViewById(R.id.iv_close);
         mPauseButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,6 +103,15 @@ public class SeekController extends FrameLayout implements View.OnTouchListener{
                 updatePausePlay();
 
                 show(sDefaultTimeout);
+            }
+        });
+
+        mCloseButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mOnCloseListener != null){
+                    mOnCloseListener.onClose();
+                }
             }
         });
 
@@ -287,5 +303,10 @@ public class SeekController extends FrameLayout implements View.OnTouchListener{
                 break;
         }
         return true;
+    }
+
+
+    public interface OnCloseListener{
+        void onClose();
     }
 }

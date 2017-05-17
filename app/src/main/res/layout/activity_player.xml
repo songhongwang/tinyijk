@@ -20,7 +20,7 @@
         android:layout_height="match_parent"
         android:background="@android:color/black"/>
 
-    <com.tangdou.tinyijk.media.widget.media.controller.SeekController
+    <com.tangdou.tinyijk.media.widget.media.controller.SeekBarMediaController
         android:id="@+id/seek_controller"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

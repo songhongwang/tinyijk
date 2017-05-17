@@ -1,18 +1,15 @@
 package com.tangdou.tinyijk.ui;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.TableLayout;
 
 import com.danikula.videocache.HttpProxyCacheServer;
 import com.tangdou.tinyijk.R;
-import com.tangdou.tinyijk.media.widget.media.AndroidMediaController;
 import com.tangdou.tinyijk.media.widget.media.IRenderView;
 import com.tangdou.tinyijk.media.widget.media.IjkVideoView;
-import com.tangdou.tinyijk.media.widget.media.controller.SeekController;
+import com.tangdou.tinyijk.media.widget.media.controller.SeekBarMediaController;
 
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
@@ -20,7 +17,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     private IjkVideoView mVideoView;
     private TableLayout mHudView;
-    private SeekController mSeekController;
+    private SeekBarMediaController mSeekBarMediaController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +47,14 @@ public class PlayerActivity extends AppCompatActivity {
 //        AndroidMediaController mediaController = new AndroidMediaController(this, false);
 //        mVideoView.setMediaController(mediaController);
 
-        mSeekController = (SeekController) findViewById(R.id.seek_controller);
-        mSeekController.setMediaPlayer(mVideoView);
+        mSeekBarMediaController = (SeekBarMediaController) findViewById(R.id.seek_controller);
+        mSeekBarMediaController.setMediaPlayer(mVideoView);
+        mSeekBarMediaController.setOnCloseListener(new SeekBarMediaController.OnCloseListener() {
+            @Override
+            public void onClose() {
+                finish();
+            }
+        });
 
 
         HttpProxyCacheServer proxy = App.getProxy(this);
