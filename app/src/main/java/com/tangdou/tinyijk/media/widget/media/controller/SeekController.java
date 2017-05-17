@@ -3,11 +3,11 @@ package com.tangdou.tinyijk.media.widget.media.controller;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -17,6 +17,8 @@ import com.tangdou.tinyijk.media.widget.media.IjkVideoView;
 
 import java.util.Formatter;
 import java.util.Locale;
+
+import tv.danmaku.ijk.media.player.IMediaPlayer;
 
 /**
  * Created by vigorous on 17/5/15.
@@ -31,11 +33,11 @@ public class SeekController extends FrameLayout implements View.OnTouchListener{
     private ProgressBar mProgress;
     private View mMenu;
     private TextView mEndTime, mCurrentTime;
-    private boolean mShowing;
+    private boolean mShowing = true;
     private boolean mDragging;
     private StringBuilder mFormatBuilder;
     private Formatter mFormatter;
-    private TextView mPauseButton;
+    private ImageView mPauseButton;
 
     public SeekController(Context context) {
         super(context);
@@ -55,7 +57,21 @@ public class SeekController extends FrameLayout implements View.OnTouchListener{
 
     public void setMediaPlayer(IjkVideoView videoView) {
         mVideoView = videoView;
-        setProgress();
+        mVideoView.setKeepScreenOn(true);
+        mVideoView.setOnCompletionListener(new IMediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(IMediaPlayer iMediaPlayer) {
+                Log.d("onCompletion", iMediaPlayer.getCurrentPosition() + " #$$$");
+                mLastPos = iMediaPlayer.getDuration();
+                updatePausePlay();
+            }
+        });
+        mVideoView.setOnPreparedListener(new IMediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(IMediaPlayer iMediaPlayer) {
+                post(mShowProgress);
+            }
+        });
     }
 
     protected void initView() {
@@ -63,8 +79,25 @@ public class SeekController extends FrameLayout implements View.OnTouchListener{
 
         mMenu = findViewById(R.id.rl_menu);
         findViewById(R.id.rl_root).setOnTouchListener(this);
-        mPauseButton = (TextView) findViewById(R.id.tv_pause);
-        mPauseButton.setOnClickListener(mPauseListener);
+        mPauseButton = (ImageView) findViewById(R.id.iv_pause);
+        mPauseButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (mVideoView.isPlaying()) {
+                    mVideoView.pause();
+                } else {
+                    mVideoView.start();
+                    if(mLastPos == mVideoView.getDuration()){ // 播放完毕 重新点击播放 seek到0
+                        mLastPos = 0;
+                    }
+                    mVideoView.seekTo((int) mLastPos);
+                }
+                updatePausePlay();
+
+                show(sDefaultTimeout);
+            }
+        });
 
         mProgress = (SeekBar) findViewById(R.id.sb_progress);
         if (mProgress != null) {
@@ -102,6 +135,18 @@ public class SeekController extends FrameLayout implements View.OnTouchListener{
         }
     }
 
+    public void hide() {
+        if (mShowing) {
+            try {
+                removeCallbacks(mShowProgress);
+                mMenu.setVisibility(INVISIBLE);
+            } catch (IllegalArgumentException ex) {
+                Log.w("MediaController", "already removed");
+            }
+            mShowing = false;
+        }
+    }
+
     private String stringForTime(int timeMs) {
         int totalSeconds = timeMs / 1000;
 
@@ -117,20 +162,6 @@ public class SeekController extends FrameLayout implements View.OnTouchListener{
         }
     }
 
-    /**
-     * Remove the controller from the screen.
-     */
-    public void hide() {
-//        if (mShowing) {
-//            try {
-//                removeCallbacks(mShowProgress);
-//                mMenu.setVisibility(INVISIBLE);
-//            } catch (IllegalArgumentException ex) {
-//                Log.w("MediaController", "already removed");
-//            }
-//            mShowing = false;
-//        }
-    }
 
     private final Runnable mFadeOut = new Runnable() {
         @Override
@@ -146,130 +177,58 @@ public class SeekController extends FrameLayout implements View.OnTouchListener{
             int pos = setProgress();
             if (!mDragging && mShowing && mVideoView.isPlaying()) {
 
-                Log.d("hongxx", pos + " " +(1000 - (pos % 1000)));
-                postDelayed(mShowProgress, 1000);
+//                Log.d("hongxx", pos + " " +(1000 - (pos % 1000)));
+                postDelayed(mShowProgress, (1000 - (pos % 1000)));
             }
         }
     };
 
+    private long mLastPos;
     private int setProgress() {
-        Log.d("songxx6", "******" + mVideoView.getCurrentPosition() + " " + mVideoView.getDuration());
-
-
         if (mVideoView == null || mDragging) {
             return 0;
         }
-        Log.d("songxx6", "………………………………………………" + mVideoView.getCurrentPosition() + " " + mVideoView.getDuration());
+        if(mVideoView.getDuration() == -1){
+            postDelayed(mShowProgress, 500);
 
+        }
         int position = mVideoView.getCurrentPosition();
         int duration = mVideoView.getDuration();
 
+        Log.d("setProgress1" , position + " " + mLastPos + " " + duration);
 
+        if(position < mLastPos){
+            position = (int) mLastPos;
+        }else{
+            mLastPos = position;
+        }
 
         if (duration > 0) {
             // use long to avoid overflow
             long pos = 1000L * position / duration;
             mProgress.setProgress( (int) pos);
-
-            Log.d("songxx2", pos + " " + position + " " + duration);
         }
         int percent = mVideoView.getBufferPercentage();
         mProgress.setSecondaryProgress(percent * 10);
-
-
 
         if (mEndTime != null){
             mEndTime.setText(stringForTime(duration));
         }
         if (mCurrentTime != null){
             mCurrentTime.setText(stringForTime(position));
-            Log.d("songxx4",  " "+ stringForTime(position));
-
         }
         return position;
     }
-
-
-    @Override
-    public boolean onTrackballEvent(MotionEvent ev) {
-        show(sDefaultTimeout);
-        return false;
-    }
-
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        int keyCode = event.getKeyCode();
-        final boolean uniqueDown = event.getRepeatCount() == 0
-                && event.getAction() == KeyEvent.ACTION_DOWN;
-        if (keyCode ==  KeyEvent.KEYCODE_HEADSETHOOK
-                || keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE
-                || keyCode == KeyEvent.KEYCODE_SPACE) {
-            if (uniqueDown) {
-                doPauseResume();
-                show(sDefaultTimeout);
-                if (mPauseButton != null) {
-                    mPauseButton.requestFocus();
-                }
-            }
-            return true;
-        } else if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY) {
-            if (uniqueDown && !mVideoView.isPlaying()) {
-                mVideoView.start();
-                updatePausePlay();
-                show(sDefaultTimeout);
-            }
-            return true;
-        } else if (keyCode == KeyEvent.KEYCODE_MEDIA_STOP
-                || keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE) {
-            if (uniqueDown && mVideoView.isPlaying()) {
-                mVideoView.pause();
-                updatePausePlay();
-                show(sDefaultTimeout);
-            }
-            return true;
-        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN
-                || keyCode == KeyEvent.KEYCODE_VOLUME_UP
-                || keyCode == KeyEvent.KEYCODE_VOLUME_MUTE
-                || keyCode == KeyEvent.KEYCODE_CAMERA) {
-            // don't show the controls for volume adjustment
-            return super.dispatchKeyEvent(event);
-        } else if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_MENU) {
-            if (uniqueDown) {
-                hide();
-            }
-            return true;
-        }
-
-        show(sDefaultTimeout);
-        return super.dispatchKeyEvent(event);
-    }
-
-    private final View.OnClickListener mPauseListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            doPauseResume();
-            show(sDefaultTimeout);
-        }
-    };
 
     private void updatePausePlay() {
         if (mMenu == null || mPauseButton == null)
             return;
 
         if (mVideoView.isPlaying()) {
-            mPauseButton.setBackgroundResource(R.drawable.video_pause);
+            mPauseButton.setImageResource(R.drawable.video_pause);
         } else {
-            mPauseButton.setBackgroundResource(R.drawable.video_play);
+            mPauseButton.setImageResource(R.drawable.video_play);
         }
-    }
-
-    private void doPauseResume() {
-        if (mVideoView.isPlaying()) {
-            mVideoView.pause();
-        } else {
-            mVideoView.start();
-        }
-        updatePausePlay();
     }
 
     private final SeekBar.OnSeekBarChangeListener mSeekListener = new SeekBar.OnSeekBarChangeListener() {
@@ -279,9 +238,6 @@ public class SeekController extends FrameLayout implements View.OnTouchListener{
 
             mDragging = true;
             removeCallbacks(mShowProgress);
-
-            Log.d("songxx", "start-----------");
-
         }
 
         @Override
@@ -293,23 +249,25 @@ public class SeekController extends FrameLayout implements View.OnTouchListener{
             long duration = mVideoView.getDuration();
             long newposition = (duration * progress) / 1000L;
 
-            Log.d("songxx", duration + " "+ newposition);
+            mLastPos = newposition;
+            Log.d("onProgressChanged", "seekTo " + mLastPos + " duration " + mVideoView.getDuration());
 
             mVideoView.seekTo( (int) newposition);
-            if (mCurrentTime != null)
+            if (mCurrentTime != null){
                 mCurrentTime.setText(stringForTime( (int) newposition));
+            }
         }
 
         @Override
         public void onStopTrackingTouch(SeekBar bar) {
             mDragging = false;
+
+            mLastPos = 0;
             setProgress();
             updatePausePlay();
             show(sDefaultTimeout);
 
             post(mShowProgress);
-            Log.d("songxx", "----------- stop");
-
         }
     };
 

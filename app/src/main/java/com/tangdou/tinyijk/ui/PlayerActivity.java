@@ -35,7 +35,8 @@ public class PlayerActivity extends AppCompatActivity {
         String url = "http://aksyun.tangdou.com/6BC9E41AF5AAD7819C33DC5901307461-20.mp4";
 //        url = "http://zv.3gv.ifeng.com/live/zhongwen800k.m3u8";
 //        url = "http://accto.tangdou.com/6B6FB1FBE9E9F9A69C33DC5901307461-20.mp4";
-        url = "http://v6.365yg.com/video/m/220f89ea3ca5c8d472a8fdd0a20854b1e79114632f00002f41f0906ee0/?Expires=1494846019&AWSAccessKeyId=qh0h9TdcEMoS2oPj7aKX&Signature=3dFTg35neuuivNpwadic9r9hbP4%3D";
+//        url = "http://v6.365yg.com/video/m/220f89ea3ca5c8d472a8fdd0a20854b1e79114632f00002f41f0906ee0/?Expires=1494846019&AWSAccessKeyId=qh0h9TdcEMoS2oPj7aKX&Signature=3dFTg35neuuivNpwadic9r9hbP4%3D";
+        url = "http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4";
 
         // 播放容器
         mVideoView = (IjkVideoView) findViewById(R.id.video_view);
@@ -59,10 +60,8 @@ public class PlayerActivity extends AppCompatActivity {
         if(App.getProxy(this).isCached(url)){
             Log.d("songxx", "proxy url = " + proxyUrl);
         }
-        mVideoView.setVideoPath(proxyUrl);
+        mVideoView.setVideoPath(url);
         mVideoView.start();
-
-
     }
 
 
