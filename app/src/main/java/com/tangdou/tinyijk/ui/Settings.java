@@ -16,29 +16,17 @@
 
 package com.tangdou.tinyijk.ui;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-
-
 public class Settings {
-    private Context mAppContext;
-    private SharedPreferences mSharedPreferences;
 
-    public static final int PV_PLAYER__Auto = 0;
     public static final int PV_PLAYER__AndroidMediaPlayer = 1;
     public static final int PV_PLAYER__IjkMediaPlayer = 2;
     public static final int PV_PLAYER__IjkExoMediaPlayer = 3;
 
-    public Settings(Context context) {
-        mAppContext = context.getApplicationContext();
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mAppContext);
-    }
-
+    public Settings() {}
 
     // 1: mediaplayer 2:ijkplayer 3:exoplayer
     public int getPlayer() {
-        return 2;
+        return PV_PLAYER__IjkMediaPlayer;
     }
 
     // true : 开启硬解码 false ：关闭硬解码
