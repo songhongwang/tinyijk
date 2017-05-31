@@ -1,6 +1,8 @@
 package com.tangdou.tinyijk.ui;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TableLayout;
@@ -11,6 +13,7 @@ import com.tangdou.tinyijk.media.widget.media.IRenderView;
 import com.tangdou.tinyijk.media.widget.media.IjkVideoView;
 import com.tangdou.tinyijk.media.widget.media.controller.SeekBarMediaController;
 
+import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 public class PlayerActivity extends AppCompatActivity {
@@ -33,15 +36,18 @@ public class PlayerActivity extends AppCompatActivity {
 //        url = "http://zv.3gv.ifeng.com/live/zhongwen800k.m3u8";
 //        url = "http://accto.tangdou.com/6B6FB1FBE9E9F9A69C33DC5901307461-20.mp4";
 //        url = "http://v6.365yg.com/video/m/220f89ea3ca5c8d472a8fdd0a20854b1e79114632f00002f41f0906ee0/?Expires=1494846019&AWSAccessKeyId=qh0h9TdcEMoS2oPj7aKX&Signature=3dFTg35neuuivNpwadic9r9hbP4%3D";
-        url = "http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4";
+        url = "http://cm14-ccm1-2.play.bokecc.com/flvs/ca/Qx8NS/urnJ6aykF6-30.mp4?t=1496214980&key=1BD930D74ED099E257F09DC117841E1D";
 
+        // init player
+        IjkMediaPlayer.loadLibrariesOnce(null);
+        IjkMediaPlayer.native_profileBegin("libijkplayer.so");
         // 播放容器
         mVideoView = (IjkVideoView) findViewById(R.id.video_view);
         mVideoView.setAspectRatio(IRenderView.AR_ASPECT_FIT_PARENT);
 
         // 帧率信息
         mHudView = (TableLayout) findViewById(R.id.hud_view);
-        mVideoView.setHudView(mHudView);
+//        mVideoView.setHudView(mHudView);
 
         // 播放控制器
 //        AndroidMediaController mediaController = new AndroidMediaController(this, false);
@@ -57,16 +63,20 @@ public class PlayerActivity extends AppCompatActivity {
         });
 
 
-        HttpProxyCacheServer proxy = App.getProxy(this);
-        String proxyUrl = proxy.getProxyUrl(url);
-
-        if(App.getProxy(this).isCached(url)){
-            Log.d("songxx", "proxy url = " + proxyUrl);
-        }
+//        HttpProxyCacheServer proxy = App.getProxy(this);
+//        String proxyUrl = proxy.getProxyUrl(url);
+//
+//        if(App.getProxy(this).isCached(url)){
+//            Log.d("songxx", "proxy url = " + proxyUrl);
+//        }
         mVideoView.setVideoPath(url);
         mVideoView.start();
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
 
     @Override
     protected void onStop() {
@@ -75,15 +85,11 @@ public class PlayerActivity extends AppCompatActivity {
         IjkMediaPlayer.native_profileEnd();
     }
 
-    int ratio = 0;
     @Override
     protected void onRestart() {
         super.onRestart();
         if(mVideoView != null){
 
-            ratio = ++ ratio % 5;
-
-            mVideoView.setAspectRatio(ratio);
             mVideoView.start();
             IjkMediaPlayer.native_profileEnd();
         }

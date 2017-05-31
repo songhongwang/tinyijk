@@ -21,7 +21,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.PlayerActivity"
-                  android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
+                  android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+                  android:alwaysRetainTaskState="true"
+                  android:configChanges="orientation|keyboardHidden|screenSize"
+                  android:screenOrientation="user">
         </activity>
     </application>
 

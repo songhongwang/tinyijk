@@ -36,83 +36,58 @@ public class Settings {
     }
 
 
+    // 1: mediaplayer 2:ijkplayer 3:exoplayer
     public int getPlayer() {
-//        String key = mAppContext.getString(R.string.pref_key_player);
-//        String value = mSharedPreferences.getString(key, "");
-        String value = "PV_PLAYER__IjkMediaPlayer";
-        try {
-            return Integer.valueOf(value).intValue();
-        } catch (NumberFormatException e) {
-            return 0;
-        }
+        return 2;
     }
 
+    // true : 开启硬解码 false ：关闭硬解码
     public boolean getUsingMediaCodec() {
-//        String key = mAppContext.getString(R.string.pref_key_using_media_codec);
-//        String key = "getUsingMediaCodec";
-//        return mSharedPreferences.getBoolean(key, false);
         return true;
     }
 
+    // true : 开启自动旋转  false : 禁用自动旋转
     public boolean getUsingMediaCodecAutoRotate() {
-//        String key = mAppContext.getString(R.string.pref_key_using_media_codec_auto_rotate);
-//        String key = "getUsingMediaCodecAutoRotate";
-//        return mSharedPreferences.getBoolean(key, false);
         return true;
     }
 
+    // true : 硬解码旋转角度处理 false : 不处理角度旋转
     public boolean getMediaCodecHandleResolutionChange() {
-//        String key = mAppContext.getString(R.string.pref_key_media_codec_handle_resolution_change);
-//        String key = "getMediaCodecHandleResolutionChange";
-//        return mSharedPreferences.getBoolean(key, false);
         return true;
     }
 
+    // true : 使用oenSLES同步输出影视频 false ： 使用audiotrack作为音频输出
     public boolean getUsingOpenSLES() {
-//        String key = mAppContext.getString(R.string.pref_key_using_opensl_es);
-//        String key = "getUsingOpenSLES";
-//        return mSharedPreferences.getBoolean(key, false);
-        return true;
-    }
-
-    public String getPixelFormat() {
-//        String key = mAppContext.getString(R.string.pref_key_pixel_format);
-        String key = "getPixelFormat";
-        return mSharedPreferences.getString(key, "");
-    }
-
-    public boolean getEnableNoView() {
-//        String key = mAppContext.getString(R.string.pref_key_enable_no_view);
-//        String key = "getEnableNoView";
-//        return mSharedPreferences.getBoolean(key, false);
         return false;
+    }
+
+    // 解码后的数据回传格式
+    public String getPixelFormat() {
+//        return "fcc-i420";
+        return null;
+    }
+
+    // 是否允许 不渲染画布
+    public boolean getEnableNoView() {
+        return true;
     }
 
     public boolean getEnableSurfaceView() {
-//        String key = mAppContext.getString(R.string.pref_key_enable_surface_view);
-//        String key = "getEnableSurfaceView";
-//        return mSharedPreferences.getBoolean(key, false);
+        return true;
+    }
+
+    // true : 使用TextureView 渲染
+    public boolean getEnableTextureView() {
         return false;
     }
 
-    public boolean getEnableTextureView() {
-//        String key = mAppContext.getString(R.string.pref_key_enable_texture_view);
-//        String key = "getEnableTextureView";
-//        return mSharedPreferences.getBoolean(key, false);
-        return true;
-    }
-
+    // 分离
     public boolean getEnableDetachedSurfaceTextureView() {
-//        String key = mAppContext.getString(R.string.pref_key_enable_detached_surface_texture);
-//        String key = "getEnableDetachedSurfaceTextureView";
-//        return mSharedPreferences.getBoolean(key, false);
         return true;
     }
 
+    // 低版本不启用缓存
     public boolean getUsingMediaDataSource() {
-//        String key = mAppContext.getString(R.string.pref_key_using_mediadatasource);
-//        String key = "getUsingMediaDataSource";
-//        return mSharedPreferences.getBoolean(key, false);
         return true;
     }
 
