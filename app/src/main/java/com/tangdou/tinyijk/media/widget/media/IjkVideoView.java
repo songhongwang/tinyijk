@@ -39,6 +39,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.tangdou.tinyijk.R;
+import com.tangdou.tinyijk.media.widget.media.services.MediaPlayerService;
 import com.tangdou.tinyijk.ui.Settings;
 
 import java.io.File;
@@ -1093,26 +1094,26 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     private boolean mEnableBackgroundPlay = false;
 
     private void initBackground() {
-//        mEnableBackgroundPlay = mSettings.getEnableBackgroundPlay();
-//        if (mEnableBackgroundPlay) {
-//            MediaPlayerService.intentToStart(getContext());
-//            mMediaPlayer = MediaPlayerService.getMediaPlayer();
-//            if (mHudViewHolder != null)
-//                mHudViewHolder.setMediaPlayer(mMediaPlayer);
-//        }
+        mEnableBackgroundPlay = mSettings.getEnableBackgroundPlay();
+        if (mEnableBackgroundPlay) {
+            MediaPlayerService.intentToStart(getContext());
+            mMediaPlayer = MediaPlayerService.getMediaPlayer();
+            if (mHudViewHolder != null)
+                mHudViewHolder.setMediaPlayer(mMediaPlayer);
+        }
     }
 
     public boolean isBackgroundPlayEnabled() {
         return mEnableBackgroundPlay;
     }
 
-//    public void enterBackground() {
-//        MediaPlayerService.setMediaPlayer(mMediaPlayer);
-//    }
+    public void enterBackground() {
+        MediaPlayerService.setMediaPlayer(mMediaPlayer);
+    }
 
-//    public void stopBackgroundPlay() {
-//        MediaPlayerService.setMediaPlayer(null);
-//    }
+    public void stopBackgroundPlay() {
+        MediaPlayerService.setMediaPlayer(null);
+    }
 
     //-------------------------
     // Extend: Background

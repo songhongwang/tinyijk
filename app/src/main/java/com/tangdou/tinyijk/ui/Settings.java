@@ -60,16 +60,17 @@ public class Settings {
         return true;
     }
 
+    // 启用surfaceview 后台切换容易花屏
     public boolean getEnableSurfaceView() {
-        return true;
+        return false;
     }
 
     // true : 使用TextureView 渲染
     public boolean getEnableTextureView() {
-        return false;
+        return true;
     }
 
-    // 分离
+    // 是否可以分离surfaceview (后台切前台不会黑屏或花屏)
     public boolean getEnableDetachedSurfaceTextureView() {
         return true;
     }
@@ -80,4 +81,7 @@ public class Settings {
     }
 
 
+    public boolean getEnableBackgroundPlay() {
+        return true;
+    }
 }

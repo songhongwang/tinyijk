@@ -78,6 +78,20 @@ public class SeekBarMediaController extends FrameLayout implements View.OnTouchL
                 post(mShowProgress);
             }
         });
+        mVideoView.setOnInfoListener(new IMediaPlayer.OnInfoListener() {
+            @Override
+            public boolean onInfo(IMediaPlayer iMediaPlayer, int what, int extra) {
+                switch (extra){
+                    case IMediaPlayer.MEDIA_INFO_BUFFERING_START:
+                        Log.d("songhh", "MEDIA_INFO_BUFFERING_START:" + what + " " + extra);
+                        break;
+                    case IMediaPlayer.MEDIA_INFO_BUFFERING_END:
+                        Log.d("songhh", "MEDIA_INFO_BUFFERING_END:" + what + " " + extra);
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     protected void initView() {

@@ -33,10 +33,12 @@ public class PlayerActivity extends AppCompatActivity {
 
     private void initPlayer() {
         String url = "http://aksyun.tangdou.com/6BC9E41AF5AAD7819C33DC5901307461-20.mp4";
-//        url = "http://zv.3gv.ifeng.com/live/zhongwen800k.m3u8";
 //        url = "http://accto.tangdou.com/6B6FB1FBE9E9F9A69C33DC5901307461-20.mp4";
 //        url = "http://v6.365yg.com/video/m/220f89ea3ca5c8d472a8fdd0a20854b1e79114632f00002f41f0906ee0/?Expires=1494846019&AWSAccessKeyId=qh0h9TdcEMoS2oPj7aKX&Signature=3dFTg35neuuivNpwadic9r9hbP4%3D";
-        url = "http://cm14-ccm1-2.play.bokecc.com/flvs/ca/Qx8NS/urnJ6aykF6-30.mp4?t=1496214980&key=1BD930D74ED099E257F09DC117841E1D";
+        url = "http://cm14-ccm1-2.play.bokecc.com/flvs/ca/Qx8NS/urnJ6aykF6-30.mp4?t=1496229360&key=4427BE2EB2C07961F9A0682FAE8EEDFB";
+        url = "http://zv.3gv.ifeng.com/live/zhongwen800k.m3u8";
+        url = "http://aksyun.tangdou.com/6BC9E41AF5AAD7819C33DC5901307461-20.mp4";
+
 
         // init player
         IjkMediaPlayer.loadLibrariesOnce(null);
