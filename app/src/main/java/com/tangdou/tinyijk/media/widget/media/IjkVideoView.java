@@ -125,6 +125,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     private long mSeekEndTime = 0;
 
     private TextView subtitleDisplay;
+    private IMediaPlayer.OnBufferingUpdateListener mOnBufferingUpdateListener;
 
     public IjkVideoView(Context context) {
         super(context);
@@ -367,6 +368,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         } finally {
             // REMOVED: mPendingSubtitleTracks.clear();
         }
+        setupBufferingUpdateListener();
     }
 
     public void setMediaController(IMediaController controller) {
@@ -491,10 +493,10 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
                             Log.d(TAG, "MEDIA_INFO_VIDEO_RENDERING_START:");
                             break;
                         case IMediaPlayer.MEDIA_INFO_BUFFERING_START:
-                            Log.d(TAG, "MEDIA_INFO_BUFFERING_START:");
+                            Log.d(TAG, "MEDIA_INFO_BUFFERING_START:" + arg1 + " " + arg2);
                             break;
                         case IMediaPlayer.MEDIA_INFO_BUFFERING_END:
-                            Log.d(TAG, "MEDIA_INFO_BUFFERING_END:");
+                            Log.d(TAG, "MEDIA_INFO_BUFFERING_END:" + arg1 + " " + arg2);
                             break;
                         case IMediaPlayer.MEDIA_INFO_NETWORK_BANDWIDTH:
                             Log.d(TAG, "MEDIA_INFO_NETWORK_BANDWIDTH: " + arg2);
@@ -1074,6 +1076,12 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
                     ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_FORMAT, "http-detect-range-support", 0);
 
                     ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_CODEC, "skip_loop_filter", 48);
+
+//                    ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER,"min-frames",100);
+//                    ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "MAX_QUEUE_SIZE", 0);
+
+//                    ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "async-backwards-capacity", 64 * 1024 * 1024);
+
                 }
                 mediaPlayer = ijkMediaPlayer;
             }
@@ -1265,5 +1273,13 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     public void setAspectRatio(int aspectRatio) {
         mCurrentAspectRatio = aspectRatio;
         mRenderView.setAspectRatio(mCurrentAspectRatio);
+    }
+
+    public void setOnBufferingUpdateListener(IMediaPlayer.OnBufferingUpdateListener l){
+        this.mOnBufferingUpdateListener = l;
+    }
+
+    private void setupBufferingUpdateListener(){
+        mMediaPlayer.setOnBufferingUpdateListener(mOnBufferingUpdateListener);
     }
 }

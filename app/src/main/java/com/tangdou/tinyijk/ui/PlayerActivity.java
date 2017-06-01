@@ -2,18 +2,14 @@ package com.tangdou.tinyijk.ui;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.TableLayout;
 
-import com.danikula.videocache.HttpProxyCacheServer;
 import com.tangdou.tinyijk.R;
 import com.tangdou.tinyijk.media.widget.media.IRenderView;
 import com.tangdou.tinyijk.media.widget.media.IjkVideoView;
 import com.tangdou.tinyijk.media.widget.media.controller.SeekBarMediaController;
 
-import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 public class PlayerActivity extends AppCompatActivity {
@@ -65,12 +61,14 @@ public class PlayerActivity extends AppCompatActivity {
         });
 
 
+
 //        HttpProxyCacheServer proxy = App.getProxy(this);
 //        String proxyUrl = proxy.getProxyUrl(url);
 //
 //        if(App.getProxy(this).isCached(url)){
 //            Log.d("songxx", "proxy url = " + proxyUrl);
 //        }
+
         mVideoView.setVideoPath(url);
         mVideoView.start();
     }

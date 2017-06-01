@@ -40,6 +40,7 @@ public class SeekBarMediaController extends FrameLayout implements View.OnTouchL
     private ImageView mPauseButton;
     private ImageView mCloseButton;
     private OnCloseListener mOnCloseListener;
+    private int mLastSecondaryProgress;
 
     public SeekBarMediaController(Context context) {
         super(context);
@@ -61,7 +62,7 @@ public class SeekBarMediaController extends FrameLayout implements View.OnTouchL
         mOnCloseListener = onCloseListener;
     }
 
-    public void setMediaPlayer(IjkVideoView videoView) {
+    public void setMediaPlayer(final IjkVideoView videoView) {
         mVideoView = videoView;
         mVideoView.setKeepScreenOn(true);
         mVideoView.setOnCompletionListener(new IMediaPlayer.OnCompletionListener() {
@@ -78,18 +79,24 @@ public class SeekBarMediaController extends FrameLayout implements View.OnTouchL
                 post(mShowProgress);
             }
         });
-        mVideoView.setOnInfoListener(new IMediaPlayer.OnInfoListener() {
+
+        mVideoView.setOnBufferingUpdateListener(new IMediaPlayer.OnBufferingUpdateListener() {
             @Override
-            public boolean onInfo(IMediaPlayer iMediaPlayer, int what, int extra) {
-                switch (extra){
-                    case IMediaPlayer.MEDIA_INFO_BUFFERING_START:
-                        Log.d("songhh", "MEDIA_INFO_BUFFERING_START:" + what + " " + extra);
-                        break;
-                    case IMediaPlayer.MEDIA_INFO_BUFFERING_END:
-                        Log.d("songhh", "MEDIA_INFO_BUFFERING_END:" + what + " " + extra);
-                        break;
+            public void onBufferingUpdate(IMediaPlayer iMediaPlayer, int percentage) {
+
+                Log.e("songhh", String.format("percentage: %s, curPosition: %s, duration: %s",
+                        percentage, mVideoView.getCurrentPosition(), mVideoView.getDuration()));
+
+                if(percentage < mLastSecondaryProgress && mLastSecondaryProgress != 100){
+                    return;
                 }
-                return false;
+
+                mLastSecondaryProgress = percentage;
+                if(mLastSecondaryProgress > 96){
+                    mLastSecondaryProgress = 100;
+                }
+
+                mProgress.setSecondaryProgress(mLastSecondaryProgress * 10);
             }
         });
     }
@@ -238,8 +245,6 @@ public class SeekBarMediaController extends FrameLayout implements View.OnTouchL
             long pos = 1000L * position / duration;
             mProgress.setProgress( (int) pos);
         }
-        int percent = mVideoView.getBufferPercentage();
-        mProgress.setSecondaryProgress(percent * 10);
 
         if (mEndTime != null){
             mEndTime.setText(stringForTime(duration));
